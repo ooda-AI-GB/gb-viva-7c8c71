@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="toolbar">
+    <h1>Directory</h1>
+    {% if user.role == 'admin' %}
+    <a href="/add-employee" class="btn btn-primary">Add Employee</a>
+    {% endif %}
+</div>
+
+<div class="toolbar" style="margin-bottom: 1rem;">
+    <form action="/directory" method="get" class="search-box">
+        <input type="text" name="q" class="form-control" placeholder="Search by name, department, or title..." value="{{ q if q else '' }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% if q %}
+        <a href="/directory" class="btn" style="background: #e2e8f0; color: #475569;">Clear</a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Job Title</th>
+                <th>Department</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emp in employees %}
+            <tr>
+                <td style="font-weight: 500; color: #0f172a;">{{ emp.name }}</td>
+                <td>{{ emp.job_title }}</td>
+                <td><span style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">{{ emp.department }}</span></td>
+                <td><a href="mailto:{{ emp.email }}" style="color: #2563eb; text-decoration: none;">{{ emp.email }}</a></td>
+                <td>{{ emp.phone }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 2rem; color: #64748b;">
+                    No employees found.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
